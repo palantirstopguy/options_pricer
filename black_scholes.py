@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.stats as scs
+from utils import calculate_d1_d2
 
 """
     Parameter:
@@ -14,15 +15,14 @@ import scipy.stats as scs
 """
 
 def Black_Scholes(S,K,r,sigma,T):
-    d1 = (np.log(S/K) + (r+(sigma**2/2))*T)/(sigma*np.sqrt(T))
-    d2 = d1 - sigma * np.sqrt(T)
+
+    d1,d2 = calculate_d1_d2(S, K, r, sigma, T)
 
     C = S * scs.norm.cdf(d1) - K*np.exp(-r*T) * scs.norm.cdf(d2)
     return C
 
 def Black_Scholes_Put(S,K,r,sigma,T):
-    d1 = (np.log(S/K) + (r+(sigma**2/2))*T)/(sigma*np.sqrt(T))
-    d2 = d1 - sigma * np.sqrt(T)
+    d1,d2 = calculate_d1_d2(S,K,r,sigma,T)
 
     C = K*np.exp(-r*T) * scs.norm.cdf(-d2) - S*scs.norm(-d1)
     return C
